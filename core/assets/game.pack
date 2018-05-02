@@ -1,0 +1,82 @@
+
+images1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+simpleButton
+  rotate: false
+  xy: 2, 2
+  size: 320, 80
+  orig: 320, 80
+  offset: 0, 0
+  index: -1
+turrets
+  rotate: false
+  xy: 2, 84
+  size: 160, 80
+  orig: 160, 80
+  offset: 0, 0
+  index: -1
+shortButton
+  rotate: false
+  xy: 2, 166
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+road
+  rotate: false
+  xy: 164, 84
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+monster
+  rotate: false
+  xy: 164, 166
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 324, 2
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+cursor
+  rotate: false
+  xy: 324, 84
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+upperPanel
+  rotate: false
+  xy: 406, 2
+  size: 1280, 60
+  orig: 1280, 60
+  offset: 0, 0
+  index: -1
+monsterBackHP
+  rotate: false
+  xy: 84, 166
+  size: 60, 16
+  orig: 60, 16
+  offset: 0, 0
+  index: -1
+star16
+  rotate: false
+  xy: 146, 166
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+monsterHp
+  rotate: false
+  xy: 84, 184
+  size: 56, 12
+  orig: 56, 12
+  offset: 0, 0
+  index: -1
