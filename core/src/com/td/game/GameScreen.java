@@ -35,7 +35,6 @@ public class GameScreen implements Screen, Serializable {
     private PlayerInfo playerInfo;
     private transient UpperPanel upperPanel;
     private transient Camera camera;
-    private boolean loadGame;
     private transient ArrayList<Object> objectArrayList;
 
     private transient ObjectOutputStream oos;
@@ -61,12 +60,9 @@ public class GameScreen implements Screen, Serializable {
 
     public TurretEmitter getTurretEmitter() {return turretEmitter; }
 
-    public void setLoadGame(boolean loadGame) {loadGame = loadGame;}
-
     public GameScreen(SpriteBatch batch, Camera camera) {
         this.batch = batch;
         this.camera = camera;
-        loadGame = true;
     }
 
     @Override
@@ -76,7 +72,7 @@ public class GameScreen implements Screen, Serializable {
         selectedCellTexture = atlas.findRegion("cursor");
         map = new Map(atlas);
         font24 = Assets.getInstance().getAssetManager().get("zorque24.ttf", BitmapFont.class);
-        if(loadGame) {
+        if(ScreenManager.getInstance().isLoadGame()) {
             LoadGame();
             turretEmitter = (TurretEmitter) objectArrayList.get(0);
             turretEmitter.setAtlas(atlas);
@@ -90,7 +86,7 @@ public class GameScreen implements Screen, Serializable {
                                                     atlas.findRegion("monsterHp"));
             playerInfo = (PlayerInfo) objectArrayList.get(2);
         }
-        if(!loadGame){
+        if(!ScreenManager.getInstance().isLoadGame()){
             turretEmitter = new TurretEmitter(atlas, this, map);
             monsterEmitter = new MonsterEmitter(atlas, map, 60);
             playerInfo = new PlayerInfo(100, 32);

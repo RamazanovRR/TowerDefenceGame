@@ -24,6 +24,11 @@ public class ScreenManager {
     private Screen targetScreen;
     private Viewport viewport;
     private Camera camera;
+    private boolean loadGame;
+
+    public boolean isLoadGame() {
+        return loadGame;
+    }
 
     private static ScreenManager ourInstance = new ScreenManager();
 
@@ -69,7 +74,7 @@ public class ScreenManager {
         game.setScreen(loadingScreen);
         switch (type) {
             case MENU:
-                //gameScreen.setLoadGame(false);
+                loadGame = false;
                 targetScreen = menuScreen;
                 Assets.getInstance().loadAssets(ScreenType.MENU);
 
@@ -79,7 +84,7 @@ public class ScreenManager {
                 Assets.getInstance().loadAssets(ScreenType.GAME);
                 break;
             case LOADGAME:
-                gameScreen.setLoadGame(true);
+                loadGame = true;
                 targetScreen = gameScreen;
                 Assets.getInstance().loadAssets(ScreenType.GAME);
         }
