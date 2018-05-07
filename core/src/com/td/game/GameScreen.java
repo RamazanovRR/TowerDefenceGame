@@ -17,7 +17,6 @@ import com.td.game.gui.UpperPanel;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class GameScreen implements Screen, Serializable {
     private transient SpriteBatch batch;
@@ -35,12 +34,7 @@ public class GameScreen implements Screen, Serializable {
     private PlayerInfo playerInfo;
     private transient UpperPanel upperPanel;
     private transient Camera camera;
-    private transient ArrayList<Object> objectArrayList;
-
-    private transient ObjectOutputStream oos;
-    private transient FileOutputStream fos;
-    private transient ObjectInputStream ois;
-    private transient FileInputStream fis;
+    private transient LoadingGame loadingGame;
 
     private transient Vector2 mousePosition;
 
@@ -58,11 +52,10 @@ public class GameScreen implements Screen, Serializable {
         return monsterEmitter;
     }
 
-    public TurretEmitter getTurretEmitter() {return turretEmitter; }
-
     public GameScreen(SpriteBatch batch, Camera camera) {
         this.batch = batch;
         this.camera = camera;
+        this.loadingGame = new LoadingGame();
     }
 
     @Override
@@ -73,18 +66,10 @@ public class GameScreen implements Screen, Serializable {
         map = new Map(atlas);
         font24 = Assets.getInstance().getAssetManager().get("zorque24.ttf", BitmapFont.class);
         if(ScreenManager.getInstance().isLoadGame()) {
-            LoadGame();
-            turretEmitter = (TurretEmitter) objectArrayList.get(0);
-            turretEmitter.setAtlas(atlas);
-            turretEmitter.setGameScreen(this);
-            turretEmitter.setMap(map);
-            turretEmitter.loadTurretsSaveFile();
-            monsterEmitter = (MonsterEmitter) objectArrayList.get(1);
-            monsterEmitter.setMap(map);
-            monsterEmitter.loadMonsterSaveFile(map, atlas.findRegion("monster"),
-                                                    atlas.findRegion("monsterBackHP"),
-                                                    atlas.findRegion("monsterHp"));
-            playerInfo = (PlayerInfo) objectArrayList.get(2);
+            loadingGame.loadingGame(map, atlas, this);
+            turretEmitter = loadingGame.getTurretEmitter();
+            monsterEmitter = loadingGame.getMonsterEmitter();
+            playerInfo = loadingGame.getPlayerInfo();
         }
         if(!ScreenManager.getInstance().isLoadGame()){
             turretEmitter = new TurretEmitter(atlas, this, map);
@@ -175,18 +160,7 @@ public class GameScreen implements Screen, Serializable {
         btnSaveGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ArrayList<Object> objectArrayList = new ArrayList<>();
-                objectArrayList.add(turretEmitter);
-                objectArrayList.add(monsterEmitter);
-                objectArrayList.add(playerInfo);
-                try {
-                    fos = new FileOutputStream("Save.sav");
-                    oos = new ObjectOutputStream(fos);
-                    oos.writeObject(objectArrayList);
-                    oos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                loadingGame.saveGame(turretEmitter,monsterEmitter,playerInfo);
             }
         });
 
@@ -264,20 +238,6 @@ public class GameScreen implements Screen, Serializable {
                     playerInfo.decreaseHp(1);
                 }
             }
-        }
-    }
-
-    public void LoadGame(){
-        objectArrayList = new ArrayList<>();
-        try {
-            fis = new FileInputStream("Save.sav");
-            ois = new ObjectInputStream(fis);
-            objectArrayList = (ArrayList<Object>) ois.readObject();
-            ois.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
