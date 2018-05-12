@@ -103,11 +103,9 @@ public class TurretEmitter implements Serializable {
 
     public void setTurret(int index, int cellX, int cellY) {
         if (map.isCellEmpty(cellX, cellY)) {
-            for (int i = 0; i < turrets.length; i++) {
-                if (turrets[i].isActive() && turrets[i].getCellX() == cellX && turrets[i].getCellY() == cellY) {
-                    return;
+            if (isEmptyTurret(cellX, cellY)) {
+                return;
                 }
-            }
             for (int i = 0; i < turrets.length; i++) {
                 if (!turrets[i].isActive()) {
                     turrets[i].activate(templates[index], cellX, cellY);
@@ -117,12 +115,24 @@ public class TurretEmitter implements Serializable {
         }
     }
 
-    public void destroyTurret(int cellX, int cellY) {
+    public  boolean isEmptyTurret( int cellX, int cellY) {
         for (int i = 0; i < turrets.length; i++) {
             if (turrets[i].isActive() && turrets[i].getCellX() == cellX && turrets[i].getCellY() == cellY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int destroyTurret(int cellX, int cellY) {
+        int cost = 0;
+        for (int i = 0; i < turrets.length; i++) {
+            if (turrets[i].isActive() && turrets[i].getCellX() == cellX && turrets[i].getCellY() == cellY) {
+                cost = templates[turrets[i].getType()].cost;
                 turrets[i].deactivate();
             }
         }
+        return cost;
     }
 
     public void loadTurretData() {

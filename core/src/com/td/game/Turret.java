@@ -24,6 +24,8 @@ public class Turret implements Serializable {
     private Monster target;
     private boolean active;
 
+    public int getType() { return this.type; }
+
     public void setGameScreen(GameScreen gameScreen) { this.gameScreen = gameScreen; }
 
     public void setMap(Map map) { this.map = map; }

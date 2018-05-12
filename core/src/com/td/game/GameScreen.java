@@ -90,6 +90,34 @@ public class GameScreen implements Screen, Serializable {
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 selectedCellX = (int) (mousePosition.x / 80);
                 selectedCellY = (int) (mousePosition.y / 80);
+                System.out.println(selectedCellX + "  " + selectedCellY);
+                if(map.isCellEmpty(selectedCellX, selectedCellY)) {
+                    int x = selectedCellX * 80 - 220;
+                    int y = selectedCellY * 80 + 100;
+                    if(selectedCellX * 80 < 170) {
+                        x = selectedCellX * 80 - 160;
+                    }
+                    if(selectedCellX * 80 > 1350) {
+                        x = selectedCellX * 80 - 280;
+                    }
+                    if(selectedCellY * 80 > 550) {
+                        y = selectedCellY * 80 - 100;
+                    }
+                    if(selectedCellY * 80 < 100) {
+                        y = selectedCellY * 80 + 100;
+                    }
+                    if(turretEmitter.isEmptyTurret(selectedCellX, selectedCellY)) {
+                        groupTurretAction.setPosition(x, y);
+                        groupTurretAction.setVisible(true);
+                    } else {
+                        groupTurretAction.setVisible(false);
+                        groupTurretSelection.setPosition(x, y);
+                        groupTurretSelection.setVisible(true);
+                    }
+                }
+                if(!map.isCellEmpty(selectedCellX,selectedCellY)) {
+                    groupTurretSelection.setVisible(false);
+                }
                 return true;
             }
         };
@@ -107,22 +135,29 @@ public class GameScreen implements Screen, Serializable {
         skin.add("simpleSkin", textButtonStyle);
 
         groupTurretAction = new Group();
+        groupTurretAction.setVisible(false);
         groupTurretAction.setPosition(50, 600);
 
-        Button btnSetTurret = new TextButton("Set", skin, "simpleSkin");
         Button btnUpgradeTurret = new TextButton("Upg", skin, "simpleSkin");
         Button btnDestroyTurret = new TextButton("Dst", skin, "simpleSkin");
-        btnSetTurret.setPosition(10, 10);
-        btnUpgradeTurret.setPosition(110, 10);
-        btnDestroyTurret.setPosition(210, 10);
-        groupTurretAction.addActor(btnSetTurret);
+        btnUpgradeTurret.setPosition(10, 10);
+        btnDestroyTurret.setPosition(110, 10);
         groupTurretAction.addActor(btnUpgradeTurret);
         groupTurretAction.addActor(btnDestroyTurret);
+
+        btnDestroyTurret.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                playerInfo.addMoney(turretEmitter.destroyTurret(selectedCellX, selectedCellY) / 2);
+                groupTurretAction.setVisible(false);
+            }
+        });
 
 
         groupTurretSelection = new Group();
         groupTurretSelection.setVisible(false);
         groupTurretSelection.setPosition(50, 500);
+        groupTurretSelection.setSize(190, 80);
         Button btnSetTurret1 = new TextButton("T1", skin, "simpleSkin");
         Button btnSetTurret2 = new TextButton("T2", skin, "simpleSkin");
         btnSetTurret1.setPosition(10, 10);
@@ -172,13 +207,6 @@ public class GameScreen implements Screen, Serializable {
         });
 
         upperPanel = new UpperPanel(playerInfo, stage, 0, 720 - 60);
-
-        btnSetTurret.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                groupTurretSelection.setVisible(!groupTurretSelection.isVisible());
-            }
-        });
         skin.dispose();
     }
 
