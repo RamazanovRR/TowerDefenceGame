@@ -1,0 +1,22 @@
+»гра разработана при помощи библиотеки LibGDX.
+дл€ запуска через среду разработки IntelliJ IDEA:
+
+¬ерси€ JDK 1.8 (1.8.0_144)
+
+1) »мпортировать проект в среду разработки через запуск файла "build.gradle" в корне каталога.
+
+2) затем в среде разработки заходим в Run -> Edit Configurations
+
+3) в открывшемс€ окне нажимаем "зеленый плюс") и добавл€ем Application
+
+4) далее настраиваем 4 следующих пол€:
+
+    Name - TDGame
+
+    Main class: - com.td.game.desktop.DesktopLauncher
+
+    Working directory: - необходимо указать путь к папке "assets" 
+
+    Use classpath of module: - desktop
+
+5) запускаем проект через кнопку Run (Shift + F10)
